@@ -1,10 +1,33 @@
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
 import axios from "@/lib/axios";
 import styles from "@/styles/Product.module.css";
 import SizeReviewList from "@/components/SizeReviewList";
 import StarRating from "@/components/StarRating";
 import Image from "next/image";
+import { useState } from "react";
+
+export async function getServerSideProps(context: any) {
+  const productId = context.params["id"];
+  let product;
+
+  try {
+    const res = await axios.get(`/products/${productId}`);
+    product = res.data;
+  } catch {
+    return {
+      notFound: true,
+    };
+  }
+
+  const res = await axios.get(`/size_reviews/?produtct_id=${productId}`);
+  const sizeReviews = res.data.results ?? [];
+
+  return {
+    props: {
+      product,
+      sizeReviews,
+    },
+  };
+}
 
 export type RouterQuery = string | string[];
 
@@ -36,33 +59,44 @@ export interface SizeReviewsData {
   productId: number;
 }
 
-export default function Product() {
-  const [product, setProduct] = useState<ProdutData>();
-  const [sizeReviews, setSizeReviews] = useState([]);
+export default function Product({
+  product,
+  sizeReviews: initialSizeReviews,
+}: any) {
+  const [sizeReviews, setSizeReviews] = useState(initialSizeReviews);
+  const [formValue, setFormValue] = useState({
+    size: "m",
+    sex: "male",
+    height: 173,
+    fit: "good",
+  });
 
-  const router = useRouter();
-  const { id } = router.query;
+  async function handleSubmit(e: any) {
+    e.preventDefalut();
+    const sizeReview = {
+      ...formValue,
+      productId: product.id,
+    };
 
-  async function getProduct(targetId: RouterQuery) {
-    const res = await axios.get(`/products/${targetId}`);
-    const nextProduct = res.data;
-    setProduct(nextProduct);
+    const res = await axios.post("/size_seviews/", sizeReview);
+    const nextSizeReview = res.data;
+    setSizeReviews((prevSizeReviews: any) => [
+      nextSizeReview,
+      ...prevSizeReviews,
+    ]);
   }
 
-  async function getSizeReviews(targetId: RouterQuery) {
-    const res = await axios.get(`/size_reviews/?produtct_id=${targetId}`);
-    const nextSizeReviews = res.data.results ?? [];
-    setSizeReviews(nextSizeReviews);
+  async function handleInputChange(e: any) {
+    const { name, value } = e.target;
+    handleChange(name, value);
   }
 
-  useEffect(() => {
-    if (!id) return;
-
-    getProduct(id);
-    getSizeReviews(id);
-  }, [id]);
-
-  if (!product) return null;
+  async function handleChange(name: any, value: any) {
+    setFormValue({
+      ...formValue,
+      [name]: value,
+    });
+  }
 
   return (
     <>

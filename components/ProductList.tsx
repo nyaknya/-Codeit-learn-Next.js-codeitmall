@@ -3,10 +3,10 @@ import styles from "./ProductList.module.css";
 import StarRating from "./StarRating";
 import Image from "next/image";
 
-export default function ProductList({ className = "", products }) {
+export default function ProductList({ className = "", products }: any) {
   return (
     <ul className={`${styles.productList} ${className}`}>
-      {products?.map((product) => (
+      {products?.map((product: any) => (
         <li key={product.id}>
           <Link className={styles.product} href={`/items/${product.id}`}>
             <div className={styles.image}>

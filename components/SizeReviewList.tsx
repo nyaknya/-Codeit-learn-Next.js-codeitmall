@@ -1,7 +1,7 @@
 import formatDate from "@/lib/formatDate";
 import sizeReviewLabels from "@/lib/sizeReviewLabels";
 import styles from "./SizeReviewList.module.css";
-import { SizeReviewsData } from "@/pages/products/[id]";
+import { SizeReviewsData } from "@/pages/items/[id]";
 
 interface SizeReviewsProps {
   sizeReviews: SizeReviewsData[];
