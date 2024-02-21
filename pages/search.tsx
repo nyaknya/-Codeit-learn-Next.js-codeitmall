@@ -1,12 +1,10 @@
-import { RouterQuery } from "./products/[id]";
+import { RouterQuery } from "@/pages/items/[id]";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import ProductList from "@/components/ProductList";
 import SearchForm from "@/components/SearchForm";
 import axios from "@/lib/axios";
 import styles from "@/styles/Search.module.css";
-import Header from "@/components/Header";
-import Container from "@/components/Container";
 import Head from "next/head";
 
 export default function Search() {

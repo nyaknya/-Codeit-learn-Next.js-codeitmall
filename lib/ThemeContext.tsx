@@ -1,8 +1,14 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import {
+  ReactChild,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
-export const ThemeContext = createContext();
+export const ThemeContext = createContext("dark");
 
-export function ThemeProvider({ children }) {
+export function ThemeProvider({ children }: any) {
   const [theme, setTheme] = useState("dark");
 
   useEffect(() => {
@@ -14,7 +20,7 @@ export function ThemeProvider({ children }) {
   }, [theme]);
 
   return (
-    <ThemeContext.Provider value={{ theme, setTheme }}>
+    <ThemeContext.Provider value={{ theme, setTheme } as any}>
       {children}
     </ThemeContext.Provider>
   );

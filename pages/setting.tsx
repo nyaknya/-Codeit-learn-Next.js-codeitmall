@@ -3,7 +3,7 @@ import { useTheme } from "@/lib/ThemeContext";
 import styles from "@/styles/Setting.module.css";
 
 export default function Setting() {
-  const { theme, setTheme } = useTheme();
+  const { theme, setTheme }: any = useTheme();
 
   return (
     <div>
@@ -14,7 +14,7 @@ export default function Setting() {
           className={styles.input}
           name="theme"
           value={theme}
-          onChange={(name, value) => setTheme(value)}
+          onChange={(_name: any, value: any) => setTheme(value)}
           options={[
             { label: "라이트", value: "light" },
             { label: "다크", value: "dark" },

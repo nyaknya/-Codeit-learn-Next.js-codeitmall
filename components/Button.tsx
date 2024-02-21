@@ -1,5 +1,12 @@
-import styles from './Button.module.css';
+import { ReactPropTypes } from "react";
+import styles from "./Button.module.css";
 
-export default function Button({ className = '', as, ...props }) {
+interface ButtonProps {
+  className: string;
+  as: any;
+  props: ReactPropTypes;
+}
+
+export default function Button({ className = "", as, ...props }: ButtonProps) {
   return <button className={`${styles.button} ${className}`} {...props} />;
 }
